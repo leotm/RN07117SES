@@ -221,9 +221,10 @@ const        weakmapSet=  uncurryThis(weakmapPrototype.set);
 $h‍_once.weakmapSet(weakmapSet);const weaksetAdd=uncurryThis(weaksetPrototype.add);$h‍_once.weaksetAdd(weaksetAdd);
 const        weaksetHas=  uncurryThis(weaksetPrototype.has);
 //
-$h‍_once.weaksetHas(weaksetHas);const functionToString=uncurryThis(functionPrototype.toString);
+$h‍_once.weaksetHas(weaksetHas);const functionToString=uncurryThis(functionPrototype.toString);$h‍_once.functionToString(functionToString);
+const        functionBind=  uncurryThis(bind);
 //
-$h‍_once.functionToString(functionToString);const{all}=Promise;
+$h‍_once.functionBind(functionBind);const{all}=Promise;
 const        promiseAll=  (promises)=>apply(all, Promise, [promises]);$h‍_once.promiseAll(promiseAll);
 const        promiseCatch=  uncurryThis(promisePrototype.catch);
 /** @type {<T, TResult1 = T, TResult2 = never>(thisArg: T, onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null) => Promise<TResult1 | TResult2>} */$h‍_once.promiseCatch(promiseCatch);
@@ -9994,7 +9995,8 @@ freeze(tameHarden);
 })()
 ,
 // === functors[47] ===
-({   imports: $h‍_imports,   liveVar: $h‍_live,   onceVar: $h‍_once,   importMeta: $h‍____meta, }) => (function () { 'use strict';   let Symbol,entries,fromEntries,getOwnPropertyDescriptors,defineProperties,arrayMap;$h‍_imports([["./commons.js", [["Symbol", [$h‍_a => (Symbol = $h‍_a)]],["entries", [$h‍_a => (entries = $h‍_a)]],["fromEntries", [$h‍_a => (fromEntries = $h‍_a)]],["getOwnPropertyDescriptors", [$h‍_a => (getOwnPropertyDescriptors = $h‍_a)]],["defineProperties", [$h‍_a => (defineProperties = $h‍_a)]],["arrayMap", [$h‍_a => (arrayMap = $h‍_a)]]]]]);   
+({   imports: $h‍_imports,   liveVar: $h‍_live,   onceVar: $h‍_once,   importMeta: $h‍____meta, }) => (function () { 'use strict';   let Symbol,entries,fromEntries,getOwnPropertyDescriptors,defineProperties,arrayMap,functionBind;$h‍_imports([["./commons.js", [["Symbol", [$h‍_a => (Symbol = $h‍_a)]],["entries", [$h‍_a => (entries = $h‍_a)]],["fromEntries", [$h‍_a => (fromEntries = $h‍_a)]],["getOwnPropertyDescriptors", [$h‍_a => (getOwnPropertyDescriptors = $h‍_a)]],["defineProperties", [$h‍_a => (defineProperties = $h‍_a)]],["arrayMap", [$h‍_a => (arrayMap = $h‍_a)]],["functionBind", [$h‍_a => (functionBind = $h‍_a)]]]]]);   
+
 
 
 
@@ -10033,11 +10035,9 @@ const        tameSymbolConstructor=  ()=>  {
   const OriginalSymbol=  Symbol;
   const SymbolPrototype=  OriginalSymbol.prototype;
 
-  const SharedSymbol=  {
-    Symbol(description) {
-      return OriginalSymbol(description);
-     }}.
-    Symbol;
+  // Bypass Hermes bug, fixed in: https://github.com/facebook/hermes/commit/00f18c89c720e1c34592bb85a1a8d311e6e99599
+  // Increase JS spec fidelity by no longer defining SharedSymbol as an object literal short-hand method
+  const SharedSymbol=  functionBind(Symbol, undefined);
 
   defineProperties(SymbolPrototype, {
     constructor: {
@@ -10983,6 +10983,7 @@ globalThis[MAKE_CAUSAL_CONSOLE_FROM_LOGGER_KEY_FOR_SES_AVA]=
       weaksetAdd: cell("weaksetAdd"),
       weaksetHas: cell("weaksetHas"),
       functionToString: cell("functionToString"),
+      functionBind: cell("functionBind"),
       promiseAll: cell("promiseAll"),
       promiseCatch: cell("promiseCatch"),
       promiseThen: cell("promiseThen"),
@@ -11359,6 +11360,7 @@ function observeImports(map, importName, importIndex) {
       weaksetAdd: cells[0].weaksetAdd.set,
       weaksetHas: cells[0].weaksetHas.set,
       functionToString: cells[0].functionToString.set,
+      functionBind: cells[0].functionBind.set,
       promiseAll: cells[0].promiseAll.set,
       promiseCatch: cells[0].promiseCatch.set,
       promiseThen: cells[0].promiseThen.set,
