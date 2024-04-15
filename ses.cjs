@@ -684,9 +684,24 @@ freeze(bestEffortStringify);
 /**
  * @typedef {object} AssertMakeErrorOptions
  * @property {string} [errorName]
+ *   Does not affect the error.name property. That remains determined by
+ *   the constructor. Rather, the `errorName` determines how this error is
+ *   identified in the causal console log's output.
  * @property {Error} [cause]
+ *   Discloses the error that caused this one, typically from a lower
+ *   layer of abstraction. This is represented by a public `cause` data property
+ *   on the error, not a hidden annotation.
  * @property {Error[]} [errors]
- *   Normally only used when the ErrorConstuctor is `AggregateError`
+ *   Normally only used when the ErrorConstuctor is `AggregateError`, to
+ *   represent the set of prior errors aggregated together in this error,
+ *   typically by `Promise.any`. But `makeError` allows it on any error.
+ *   This is represented by a public `errors` data property on the error,
+ *   not a hidden annotation.
+ * @property {boolean} [sanitize]
+ *   Defaults to true. If true, `makeError` will apply `sanitizeError`
+ *   to the error before returning it. See the comments on `sanitizeError`.
+ *   (TODO what is the proper jsdoc manner to link to another function's
+ *   doc-comment?)
  */
 
 /**
@@ -1478,7 +1493,12 @@ freeze(makeNoteLogArgsArrayKit);
 })()
 ,
 // === functors[9] ===
-({   imports: $h‍_imports,   liveVar: $h‍_live,   onceVar: $h‍_once,   importMeta: $h‍____meta, }) => (function () { 'use strict';   let RangeError,TypeError,WeakMap,arrayJoin,arrayMap,arrayPop,arrayPush,assign,freeze,defineProperty,globalThis,is,isError,regexpTest,stringIndexOf,stringReplace,stringSlice,stringStartsWith,weakmapDelete,weakmapGet,weakmapHas,weakmapSet,AggregateError,an,bestEffortStringify,makeNoteLogArgsArrayKit;$h‍_imports([["../commons.js", [["RangeError", [$h‍_a => (RangeError = $h‍_a)]],["TypeError", [$h‍_a => (TypeError = $h‍_a)]],["WeakMap", [$h‍_a => (WeakMap = $h‍_a)]],["arrayJoin", [$h‍_a => (arrayJoin = $h‍_a)]],["arrayMap", [$h‍_a => (arrayMap = $h‍_a)]],["arrayPop", [$h‍_a => (arrayPop = $h‍_a)]],["arrayPush", [$h‍_a => (arrayPush = $h‍_a)]],["assign", [$h‍_a => (assign = $h‍_a)]],["freeze", [$h‍_a => (freeze = $h‍_a)]],["defineProperty", [$h‍_a => (defineProperty = $h‍_a)]],["globalThis", [$h‍_a => (globalThis = $h‍_a)]],["is", [$h‍_a => (is = $h‍_a)]],["isError", [$h‍_a => (isError = $h‍_a)]],["regexpTest", [$h‍_a => (regexpTest = $h‍_a)]],["stringIndexOf", [$h‍_a => (stringIndexOf = $h‍_a)]],["stringReplace", [$h‍_a => (stringReplace = $h‍_a)]],["stringSlice", [$h‍_a => (stringSlice = $h‍_a)]],["stringStartsWith", [$h‍_a => (stringStartsWith = $h‍_a)]],["weakmapDelete", [$h‍_a => (weakmapDelete = $h‍_a)]],["weakmapGet", [$h‍_a => (weakmapGet = $h‍_a)]],["weakmapHas", [$h‍_a => (weakmapHas = $h‍_a)]],["weakmapSet", [$h‍_a => (weakmapSet = $h‍_a)]],["AggregateError", [$h‍_a => (AggregateError = $h‍_a)]]]],["./stringify-utils.js", [["an", [$h‍_a => (an = $h‍_a)]],["bestEffortStringify", [$h‍_a => (bestEffortStringify = $h‍_a)]]]],["./types.js", []],["./internal-types.js", []],["./note-log-args.js", [["makeNoteLogArgsArrayKit", [$h‍_a => (makeNoteLogArgsArrayKit = $h‍_a)]]]]]);   
+({   imports: $h‍_imports,   liveVar: $h‍_live,   onceVar: $h‍_once,   importMeta: $h‍____meta, }) => (function () { 'use strict';   let RangeError,TypeError,WeakMap,arrayJoin,arrayMap,arrayPop,arrayPush,assign,freeze,defineProperty,globalThis,is,isError,regexpTest,stringIndexOf,stringReplace,stringSlice,stringStartsWith,weakmapDelete,weakmapGet,weakmapHas,weakmapSet,AggregateError,getOwnPropertyDescriptors,ownKeys,create,objectPrototype,objectHasOwnProperty,an,bestEffortStringify,makeNoteLogArgsArrayKit;$h‍_imports([["../commons.js", [["RangeError", [$h‍_a => (RangeError = $h‍_a)]],["TypeError", [$h‍_a => (TypeError = $h‍_a)]],["WeakMap", [$h‍_a => (WeakMap = $h‍_a)]],["arrayJoin", [$h‍_a => (arrayJoin = $h‍_a)]],["arrayMap", [$h‍_a => (arrayMap = $h‍_a)]],["arrayPop", [$h‍_a => (arrayPop = $h‍_a)]],["arrayPush", [$h‍_a => (arrayPush = $h‍_a)]],["assign", [$h‍_a => (assign = $h‍_a)]],["freeze", [$h‍_a => (freeze = $h‍_a)]],["defineProperty", [$h‍_a => (defineProperty = $h‍_a)]],["globalThis", [$h‍_a => (globalThis = $h‍_a)]],["is", [$h‍_a => (is = $h‍_a)]],["isError", [$h‍_a => (isError = $h‍_a)]],["regexpTest", [$h‍_a => (regexpTest = $h‍_a)]],["stringIndexOf", [$h‍_a => (stringIndexOf = $h‍_a)]],["stringReplace", [$h‍_a => (stringReplace = $h‍_a)]],["stringSlice", [$h‍_a => (stringSlice = $h‍_a)]],["stringStartsWith", [$h‍_a => (stringStartsWith = $h‍_a)]],["weakmapDelete", [$h‍_a => (weakmapDelete = $h‍_a)]],["weakmapGet", [$h‍_a => (weakmapGet = $h‍_a)]],["weakmapHas", [$h‍_a => (weakmapHas = $h‍_a)]],["weakmapSet", [$h‍_a => (weakmapSet = $h‍_a)]],["AggregateError", [$h‍_a => (AggregateError = $h‍_a)]],["getOwnPropertyDescriptors", [$h‍_a => (getOwnPropertyDescriptors = $h‍_a)]],["ownKeys", [$h‍_a => (ownKeys = $h‍_a)]],["create", [$h‍_a => (create = $h‍_a)]],["objectPrototype", [$h‍_a => (objectPrototype = $h‍_a)]],["objectHasOwnProperty", [$h‍_a => (objectHasOwnProperty = $h‍_a)]]]],["./stringify-utils.js", [["an", [$h‍_a => (an = $h‍_a)]],["bestEffortStringify", [$h‍_a => (bestEffortStringify = $h‍_a)]]]],["./types.js", []],["./internal-types.js", []],["./note-log-args.js", [["makeNoteLogArgsArrayKit", [$h‍_a => (makeNoteLogArgsArrayKit = $h‍_a)]]]]]);   
+
+
+
+
+
 
 
 
@@ -1735,12 +1755,79 @@ const tagError=  (err, optErrorName=  err.name)=>  {
  };
 
 /**
+ * Make reasonable best efforts to make a `Passable` error.
+ *   - `sanitizeError` will remove any "extraneous" own properties already added
+ *     by the host,
+ *     such as `fileName`,`lineNumber` on FireFox or `line` on Safari.
+ *   - If any such "extraneous" properties were removed, `sanitizeError` will
+ *     annotate
+ *     the error with them, so they still appear on the causal console
+ *     log output for diagnostic purposes, but not be otherwise visible.
+ *   - `sanitizeError` will ensure that any expected properties already
+ *     added by the host are data
+ *     properties, converting accessor properties to data properties as needed,
+ *     such as `stack` on v8 (Chrome, Brave, Edge?)
+ *   - `sanitizeError` will freeze the error, preventing any correct engine from
+ *     adding or
+ *     altering any of the error's own properties `sanitizeError` is done.
+ *
+ * However, `sanitizeError` will not, for example, `harden`
+ * (i.e., deeply freeze)
+ * or ensure that the `cause` or `errors` property satisfy the `Passable`
+ * constraints. The purpose of `sanitizeError` is only to protect against
+ * mischief the host may have already added to the error as created,
+ * not to ensure that the error is actually Passable. For that,
+ * see `toPassableError` in `@endo/pass-style`.
+ *
+ * @param {Error} error
+ */
+const sanitizeError=  (error)=>{
+  const descs=  getOwnPropertyDescriptors(error);
+  const {
+    name: _nameDesc,
+    message: _messageDesc,
+    errors: _errorsDesc=  undefined,
+    cause: _causeDesc=  undefined,
+    stack: _stackDesc=  undefined,
+    ...restDescs}=
+      descs;
+
+  const restNames=  ownKeys(restDescs);
+  if( restNames.length>=  1) {
+    for( const name of restNames) {
+      delete error[name];
+     }
+    const droppedNote=  create(objectPrototype, restDescs);
+    // eslint-disable-next-line no-use-before-define
+    note(
+      error,
+      redactedDetails `originally with properties ${quote(droppedNote)}`);
+
+   }
+  for( const name of ownKeys(error)) {
+    // @ts-expect-error TS still confused by symbols as property names
+    const desc=  descs[name];
+    if( desc&&  objectHasOwnProperty(desc, 'get')) {
+      defineProperty(error, name, {
+        value: error[name]  // invoke the getter to convert to data property
+});
+     }
+   }
+  freeze(error);
+ };
+
+/**
  * @type {AssertMakeError}
  */
 const makeError=  (
   optDetails=  redactedDetails `Assert failed`,
   errConstructor=  globalThis.Error,
-  { errorName=  undefined, cause=  undefined, errors=  undefined}=   {})=>
+  {
+    errorName=  undefined,
+    cause=  undefined,
+    errors=  undefined,
+    sanitize=  true}=
+      {})=>
      {
   if( typeof optDetails===  'string') {
     // If it is a string, use it as the literal part of the template so
@@ -1778,6 +1865,9 @@ const makeError=  (
   weakmapSet(hiddenMessageLogArgs, error, getLogArgs(hiddenDetails));
   if( errorName!==  undefined) {
     tagError(error, errorName);
+   }
+  if( sanitize) {
+    sanitizeError(error);
    }
   // The next line is a particularly fruitful place to put a breakpoint.
   return error;
