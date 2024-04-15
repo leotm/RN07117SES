@@ -1,4 +1,4 @@
-// ses@1.4.0
+// ses@1.4.1
 'use strict';
 (() => {
   const functors = [
@@ -2033,7 +2033,7 @@ const assert=  makeAssert();$h‍_once.assert(assert);
 
 
 /**
- * @typedef {import('../types.js').Harden} Harden
+ * @import {Harden} from '../types.js'
  */
 
 // Obtain the string tag accessor of of TypedArray so we can indirectly use the
@@ -10243,7 +10243,7 @@ const        tameFauxDataProperties=  (intrinsics)=>{
 
 
 
-/** @typedef {import('../types.js').LockdownOptions} LockdownOptions */
+/** @import {LockdownOptions} from '../types.js' */
 
 const { Fail, details: d, quote: q}=   assert;
 
@@ -10637,8 +10637,10 @@ const        repairIntrinsics=  (options=  {})=>  {
 
 
 
+/** @import {LockdownOptions} from '../types.js' */
+
 /**
- * @param {import('./lockdown.js').LockdownOptions} options
+ * @param {LockdownOptions} options
  */
 globalThis.lockdown=  (options)=>{
   const hardenIntrinsics=  repairIntrinsics(options);
@@ -10646,7 +10648,7 @@ globalThis.lockdown=  (options)=>{
  };
 
 /**
- * @param {import('./lockdown.js').LockdownOptions} options
+ * @param {LockdownOptions} options
  */
 globalThis.repairIntrinsics=  (options)=>{
   const hardenIntrinsics=  repairIntrinsics(options);
