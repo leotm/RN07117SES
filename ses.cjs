@@ -10486,7 +10486,7 @@ const        repairIntrinsics=  (options=  {})=>  {
   // trace retained:
   priorRepairIntrinsics.stack;
 
-  assertDirectEvalAvailable();
+  // assertDirectEvalAvailable(); // TODO
 
   /**
    * Because of packagers and bundlers, etc, multiple invocations of lockdown
@@ -10552,9 +10552,9 @@ const        repairIntrinsics=  (options=  {})=>  {
   addIntrinsics(tameRegExpConstructor(regExpTaming));
   addIntrinsics(tameSymbolConstructor());
 
-  addIntrinsics(getAnonymousIntrinsics());
+  // addIntrinsics(getAnonymousIntrinsics()); // TODO
 
-  completePrototypes();
+  // completePrototypes(); // TODO
 
   const intrinsics=  finalIntrinsics();
 
@@ -10622,7 +10622,7 @@ const        repairIntrinsics=  (options=  {})=>  {
   // Remove non-standard properties.
   // All remaining function encountered during whitelisting are
   // branded as honorary native functions.
-  whitelistIntrinsics(intrinsics, markVirtualizedNativeFunction);
+  // whitelistIntrinsics(intrinsics, markVirtualizedNativeFunction); // TODO
 
   // Initialize the powerful initial global, i.e., the global of the
   // start compartment, from the intrinsics.
