@@ -9901,25 +9901,42 @@ const        getAnonymousIntrinsics=  ()=>  {
   // eslint-disable-next-line no-empty-function
   async function* AsyncGeneratorFunctionInstance() { }
   const AsyncGeneratorFunction=  getConstructorOf(
-    AsyncGeneratorFunctionInstance);
+    AsyncGeneratorFunctionInstance); // fn [bytecode]
+  // throw AsyncGeneratorFunction.prototype; // fn [native code]
+  // throw AsyncGeneratorFunction.prototype.prototype; // undefined
+
 
 
   // 25.3.2.2 AsyncGeneratorFunction.prototype
-  const AsyncGenerator=  AsyncGeneratorFunction.prototype;
+  const AsyncGenerator=  AsyncGeneratorFunction.prototype; // fn [native code]
+  // throw AsyncGenerator.prototype; // undefined
+
+  const asyncIterable = {
+    async *[Symbol.asyncIterator]() {
+  
+    }
+  };
+  // throw asyncIterable[Symbol.asyncIterator]; // fn [bytecode]
+  
+  const asyncIterator = asyncIterable[Symbol.asyncIterator]();
+  // throw Object.keys(asyncIterator); // _invoke
+
   // 25.5.1 Properties of the AsyncGenerator Prototype Object
-  const AsyncGeneratorPrototype=  AsyncGenerator.prototype;
-  const AsyncIteratorPrototype=  getPrototypeOf(AsyncGeneratorPrototype);
+  const AsyncGeneratorPrototype=  AsyncGenerator.prototype; // undefined
+  const AsyncIteratorPrototype=  getPrototypeOf(asyncIterator);
+  // throw Object.keys(AsyncIteratorPrototype); // @@asyncIterator,next,throw,return
 
   // 25.7.1 The AsyncFunction Constructor
 
   // eslint-disable-next-line no-empty-function
-  async function AsyncFunctionInstance() { }
-  const AsyncFunction=  getConstructorOf(AsyncFunctionInstance);
+  const AsyncFunctionInstance = (0,eval)('(async function () { })'); // async fn [bytecode]
+  // async function AsyncFunctionInstance() { } // fn [bytecode]
+  const AsyncFunction=  getConstructorOf(AsyncFunctionInstance); // fn [bytecode]
 
   const intrinsics=  {
     '%InertFunction%': InertFunction,
     '%ArrayIteratorPrototype%': ArrayIteratorPrototype,
-    '%InertAsyncFunction%': AsyncFunction,
+    '%InertAsyncFunction%': AsyncFunction, // sync, not async
     '%AsyncGenerator%': AsyncGenerator,
     '%InertAsyncGeneratorFunction%': AsyncGeneratorFunction,
     '%AsyncGeneratorPrototype%': AsyncGeneratorPrototype,
@@ -10552,7 +10569,7 @@ const        repairIntrinsics=  (options=  {})=>  {
   addIntrinsics(tameRegExpConstructor(regExpTaming));
   addIntrinsics(tameSymbolConstructor());
 
-  // addIntrinsics(getAnonymousIntrinsics()); // TODO
+  addIntrinsics(getAnonymousIntrinsics());
 
   // completePrototypes(); // TODO
 
