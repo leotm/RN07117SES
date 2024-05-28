@@ -3460,38 +3460,10 @@ const        permitted=  {
     '@@toStringTag': 'string'},
 
 
-  '%InertAsyncGeneratorFunction%': {
-    // Properties of the AsyncGeneratorFunction Constructor
-    '[[Proto]]': '%InertFunction%',
-    prototype: '%AsyncGenerator%'},
-
-
-  '%AsyncGenerator%': {
-    // Properties of the AsyncGeneratorFunction Prototype Object
-    '[[Proto]]': '%FunctionPrototype%',
-    constructor: '%InertAsyncGeneratorFunction%',
-    prototype: '%AsyncGeneratorPrototype%',
-    // length prop added here for React Native jsc-android
-    // https://github.com/endojs/endo/issues/660
-    // https://github.com/react-native-community/jsc-android-buildscripts/issues/181
-    length: 'number',
-    '@@toStringTag': 'string'},
-
-
   '%GeneratorPrototype%': {
     // Properties of the Generator Prototype Object
     '[[Proto]]': '%IteratorPrototype%',
     constructor: '%Generator%',
-    next: fn,
-    return: fn,
-    throw: fn,
-    '@@toStringTag': 'string'},
-
-
-  '%AsyncGeneratorPrototype%': {
-    // Properties of the AsyncGenerator Prototype Object
-    '[[Proto]]': '%AsyncIteratorPrototype%',
-    constructor: '%AsyncGenerator%',
     next: fn,
     return: fn,
     throw: fn,
@@ -4269,11 +4241,6 @@ function                tameFunctionConstructors() {
     'AsyncFunction',
     '%InertAsyncFunction%',
     '(async function(){})');
-
-  repairFunction(
-    'AsyncGeneratorFunction',
-    '%InertAsyncGeneratorFunction%',
-    '(async function*(){})');
 
 
   return newIntrinsics;
@@ -9723,20 +9690,6 @@ const        getAnonymousIntrinsics=  ()=>  {
 
   const Generator=  GeneratorFunction.prototype;
 
-  // 25.3.1 The AsyncGeneratorFunction Constructor
-
-  // eslint-disable-next-line no-empty-function
-  async function* AsyncGeneratorFunctionInstance() { }
-  const AsyncGeneratorFunction=  getConstructorOf(
-    AsyncGeneratorFunctionInstance);
-
-
-  // 25.3.2.2 AsyncGeneratorFunction.prototype
-  const AsyncGenerator=  AsyncGeneratorFunction.prototype;
-  // 25.5.1 Properties of the AsyncGenerator Prototype Object
-  const AsyncGeneratorPrototype=  AsyncGenerator.prototype;
-  const AsyncIteratorPrototype=  getPrototypeOf(AsyncGeneratorPrototype);
-
   // 25.7.1 The AsyncFunction Constructor
 
   // eslint-disable-next-line no-empty-function
@@ -9747,10 +9700,6 @@ const        getAnonymousIntrinsics=  ()=>  {
     '%InertFunction%': InertFunction,
     '%ArrayIteratorPrototype%': ArrayIteratorPrototype,
     '%InertAsyncFunction%': AsyncFunction,
-    '%AsyncGenerator%': AsyncGenerator,
-    '%InertAsyncGeneratorFunction%': AsyncGeneratorFunction,
-    '%AsyncGeneratorPrototype%': AsyncGeneratorPrototype,
-    '%AsyncIteratorPrototype%': AsyncIteratorPrototype,
     '%Generator%': Generator,
     '%InertGeneratorFunction%': GeneratorFunction,
     '%IteratorPrototype%': IteratorPrototype,
