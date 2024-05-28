@@ -9899,39 +9899,24 @@ const        getAnonymousIntrinsics=  ()=>  {
   // 25.3.1 The AsyncGeneratorFunction Constructor
 
   // eslint-disable-next-line no-empty-function
-  async function* AsyncGeneratorFunctionInstance() { }
+  async function* AsyncGeneratorFunctionInstance() { } // undefined without Babel, FIX
   const AsyncGeneratorFunction=  getConstructorOf(
-    AsyncGeneratorFunctionInstance); // fn [bytecode]
-  // throw AsyncGeneratorFunction.prototype; // fn [native code]
-  // throw AsyncGeneratorFunction.prototype.prototype; // undefined
-
-
+    AsyncGeneratorFunctionInstance);
 
   // 25.3.2.2 AsyncGeneratorFunction.prototype
-  const AsyncGenerator=  AsyncGeneratorFunction.prototype; // fn [native code]
-  // throw AsyncGenerator.prototype; // undefined
-
-  const asyncIterable = {
-    async *[Symbol.asyncIterator]() {
-  
-    }
-  };
-  // throw asyncIterable[Symbol.asyncIterator]; // fn [bytecode]
+  const AsyncGenerator=  AsyncGeneratorFunction.prototype;
   
   const asyncIterator = asyncIterable[Symbol.asyncIterator]();
-  // throw Object.keys(asyncIterator); // _invoke
 
   // 25.5.1 Properties of the AsyncGenerator Prototype Object
-  const AsyncGeneratorPrototype=  AsyncGenerator.prototype; // undefined
-  const AsyncIteratorPrototype=  getPrototypeOf(asyncIterator);
-  // throw Object.keys(AsyncIteratorPrototype); // @@asyncIterator,next,throw,return
+  const AsyncGeneratorPrototype = AsyncGenerator.prototype; // undefined with Babel
+  const AsyncIteratorPrototype=  getPrototypeOf(AsyncGeneratorPrototype);
 
   // 25.7.1 The AsyncFunction Constructor
 
   // eslint-disable-next-line no-empty-function
-  const AsyncFunctionInstance = (0,eval)('(async function () { })'); // async fn [bytecode]
-  // async function AsyncFunctionInstance() { } // fn [bytecode]
-  const AsyncFunction=  getConstructorOf(AsyncFunctionInstance); // fn [bytecode]
+  async function AsyncFunctionInstance() { }
+  const AsyncFunction=  getConstructorOf(AsyncFunctionInstance);
 
   const intrinsics=  {
     '%InertFunction%': InertFunction,
@@ -10503,7 +10488,7 @@ const        repairIntrinsics=  (options=  {})=>  {
   // trace retained:
   priorRepairIntrinsics.stack;
 
-  // assertDirectEvalAvailable(); // TODO
+  // assertDirectEvalAvailable(); // TODO 1
 
   /**
    * Because of packagers and bundlers, etc, multiple invocations of lockdown
@@ -10558,7 +10543,7 @@ const        repairIntrinsics=  (options=  {})=>  {
   const { addIntrinsics, completePrototypes, finalIntrinsics}=
     makeIntrinsicsCollector();
 
-  const tamedHarden=  tameHarden(safeHarden, __hardenTaming__);
+  const tamedHarden=  tameHarden(safeHarden, __hardenTaming__); // TODO 5
   addIntrinsics({ harden: tamedHarden});
 
   addIntrinsics(tameFunctionConstructors());
@@ -10569,9 +10554,9 @@ const        repairIntrinsics=  (options=  {})=>  {
   addIntrinsics(tameRegExpConstructor(regExpTaming));
   addIntrinsics(tameSymbolConstructor());
 
-  addIntrinsics(getAnonymousIntrinsics());
+  addIntrinsics(getAnonymousIntrinsics()); // TODO 2
 
-  // completePrototypes(); // TODO
+  // completePrototypes(); // TODO 3
 
   const intrinsics=  finalIntrinsics();
 
@@ -10639,7 +10624,7 @@ const        repairIntrinsics=  (options=  {})=>  {
   // Remove non-standard properties.
   // All remaining function encountered during whitelisting are
   // branded as honorary native functions.
-  // whitelistIntrinsics(intrinsics, markVirtualizedNativeFunction); // TODO
+  // whitelistIntrinsics(intrinsics, markVirtualizedNativeFunction); // TODO 4
 
   // Initialize the powerful initial global, i.e., the global of the
   // start compartment, from the intrinsics.
