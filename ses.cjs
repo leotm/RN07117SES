@@ -10262,7 +10262,7 @@ const        repairIntrinsics=  (options=  {})=>  {
   // trace retained:
   priorRepairIntrinsics.stack;
 
-  assertDirectEvalAvailable();
+  // assertDirectEvalAvailable(); // TODO 1
 
   /**
    * Because of packagers and bundlers, etc, multiple invocations of lockdown
@@ -10317,7 +10317,7 @@ const        repairIntrinsics=  (options=  {})=>  {
   const { addIntrinsics, completePrototypes, finalIntrinsics}=
     makeIntrinsicsCollector();
 
-  const tamedHarden=  tameHarden(safeHarden, __hardenTaming__);
+  const tamedHarden=  tameHarden(safeHarden, 'unsafe'); // TODO 4
   addIntrinsics({ harden: tamedHarden});
 
   addIntrinsics(tameFunctionConstructors());
@@ -10330,7 +10330,7 @@ const        repairIntrinsics=  (options=  {})=>  {
 
   addIntrinsics(getAnonymousIntrinsics());
 
-  completePrototypes();
+  // completePrototypes(); TODO 2
 
   const intrinsics=  finalIntrinsics();
 
@@ -10398,7 +10398,7 @@ const        repairIntrinsics=  (options=  {})=>  {
   // Remove non-standard properties.
   // All remaining function encountered during whitelisting are
   // branded as honorary native functions.
-  whitelistIntrinsics(intrinsics, markVirtualizedNativeFunction);
+  // whitelistIntrinsics(intrinsics, markVirtualizedNativeFunction); // TODO 3
 
   // Initialize the powerful initial global, i.e., the global of the
   // start compartment, from the intrinsics.
