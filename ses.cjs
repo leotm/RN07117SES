@@ -7839,7 +7839,7 @@ function                tameErrorConstructor(
 })()
 ,
 // === functors[39] ===
-({   imports: $h‍_imports,   liveVar: $h‍_live,   onceVar: $h‍_once,   importMeta: $h‍____meta, }) => (function () { 'use strict';   let getenv,ReferenceError,TypeError,Map,Set,arrayJoin,arrayMap,arrayPush,create,freeze,mapGet,mapHas,mapSet,setAdd,promiseThen,values,weakmapGet,generatorNext,generatorThrow,assert;$h‍_imports([["@endo/env-options", [["getEnvironmentOption", [$h‍_a => (getenv = $h‍_a)]]]],["./commons.js", [["ReferenceError", [$h‍_a => (ReferenceError = $h‍_a)]],["TypeError", [$h‍_a => (TypeError = $h‍_a)]],["Map", [$h‍_a => (Map = $h‍_a)]],["Set", [$h‍_a => (Set = $h‍_a)]],["arrayJoin", [$h‍_a => (arrayJoin = $h‍_a)]],["arrayMap", [$h‍_a => (arrayMap = $h‍_a)]],["arrayPush", [$h‍_a => (arrayPush = $h‍_a)]],["create", [$h‍_a => (create = $h‍_a)]],["freeze", [$h‍_a => (freeze = $h‍_a)]],["mapGet", [$h‍_a => (mapGet = $h‍_a)]],["mapHas", [$h‍_a => (mapHas = $h‍_a)]],["mapSet", [$h‍_a => (mapSet = $h‍_a)]],["setAdd", [$h‍_a => (setAdd = $h‍_a)]],["promiseThen", [$h‍_a => (promiseThen = $h‍_a)]],["values", [$h‍_a => (values = $h‍_a)]],["weakmapGet", [$h‍_a => (weakmapGet = $h‍_a)]],["generatorNext", [$h‍_a => (generatorNext = $h‍_a)]],["generatorThrow", [$h‍_a => (generatorThrow = $h‍_a)]]]],["./error/assert.js", [["assert", [$h‍_a => (assert = $h‍_a)]]]]]);   
+({   imports: $h‍_imports,   liveVar: $h‍_live,   onceVar: $h‍_once,   importMeta: $h‍____meta, }) => (function () { 'use strict';   let getenv,ReferenceError,TypeError,Map,Set,arrayJoin,arrayMap,arrayPush,create,freeze,mapGet,mapHas,mapSet,setAdd,promiseThen,values,weakmapGet,generatorNext,generatorThrow,assert;$h‍_imports([["@endo/env-options", [["getEnvironmentOption", [$h‍_a => (getenv = $h‍_a)]]]],["./commons.js", [["ReferenceError", [$h‍_a => (ReferenceError = $h‍_a)]],["TypeError", [$h‍_a => (TypeError = $h‍_a)]],["Map", [$h‍_a => (Map = $h‍_a)]],["Set", [$h‍_a => (Set = $h‍_a)]],["arrayJoin", [$h‍_a => (arrayJoin = $h‍_a)]],["arrayMap", [$h‍_a => (arrayMap = $h‍_a)]],["arrayPush", [$h‍_a => (arrayPush = $h‍_a)]],["create", [$h‍_a => (create = $h‍_a)]],["freeze", [$h‍_a => (freeze = $h‍_a)]],["mapGet", [$h‍_a => (mapGet = $h‍_a)]],["mapHas", [$h‍_a => (mapHas = $h‍_a)]],["mapSet", [$h‍_a => (mapSet = $h‍_a)]],["setAdd", [$h‍_a => (setAdd = $h‍_a)]],["promiseThen", [$h‍_a => (promiseThen = $h‍_a)]],["values", [$h‍_a => (values = $h‍_a)]],["weakmapGet", [$h‍_a => (weakmapGet = $h‍_a)]],["generatorNext", [$h‍_a => (generatorNext = $h‍_a)]],["generatorThrow", [$h‍_a => (generatorThrow = $h‍_a)]]]],["./error/assert.js", [["assert", [$h‍_a => (assert = $h‍_a)]]]]]);Object.defineProperty(load, 'name', {value: "load"});$h‍_once.load(load);   
 
 
 
@@ -8189,7 +8189,7 @@ function asyncJobQueue() {
    *
    * @returns {Promise<Array<Error>>}
    */
-  const drainQueue=  async()=>   {
+  async function drainQueue()  {
     for( const job of pendingJobs) {
       // eslint-disable-next-line no-await-in-loop
       await job;
@@ -8228,12 +8228,12 @@ const preferAsync=  (asyncImpl, _syncImpl)=>  asyncImpl;
  * compartment and the specifier of the module within its own compartment.
  * This graph is then ready to be synchronously linked and executed.
  */
-const        load=  async(
+async function        load(
   compartmentPrivateFields,
   moduleAliases,
   compartment,
-  moduleSpecifier)=>
-     {
+  moduleSpecifier)
+  {
   const { name: compartmentName}=   weakmapGet(
     compartmentPrivateFields,
     compartment);
@@ -8271,7 +8271,7 @@ const        load=  async(
  * The module records refer to each other by a reference to the dependency's
  * compartment and the specifier of the module within its own compartment.
  * This graph is then ready to be synchronously linked and executed.
- */$h‍_once.load(load);
+ */
 const        loadNow=  (
   compartmentPrivateFields,
   moduleAliases,
